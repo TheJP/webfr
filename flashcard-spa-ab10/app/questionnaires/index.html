@@ -1,0 +1,19 @@
+<h1>Questionnaires</h1>
+<p>
+	<span class="label label-info">Full</span>
+	<button class="btn btn-success" data-ng-click="questionnairesController.openModal()">New...</button>
+</p>
+<p>
+<form class="form-inline">
+	<span class="label label-info">Quick</span>
+	<div class="form-group">
+		<label for="name" class="visible-xs-inline">Name</label>
+		<input id="name" type="text" class="form-control" data-ng-model="questionnairesController.name" />
+    </div>
+    <button class="btn btn-success" data-ng-click="questionnairesController.add()">New</button>
+</form>
+</p>
+<table class="table table-hover">
+	<tr><th>Id</th><th>Title</th><th>Description</th><th>Delete</th></tr>
+	<tr data-entry data-ng-repeat="(key, model) in questionnairesController.getAll()" data-questionnaire="model" data-controller="questionnairesController"></tr>
+</table>

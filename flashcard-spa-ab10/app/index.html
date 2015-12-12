@@ -1,26 +1,26 @@
 <!doctype html>
 <html data-ng-app="flashcard">
   <head>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="app.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <meta charset="utf-8">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>
     <script src="app.js"></script>
     <script src="questionnaires/questionnaires-directives.js"></script>
     <script src="questionnaires/questionnaires-service.js"></script>
+    <script src="questionnaires/questionnaires-form-controller.js"></script>
+    <script src="questionnaires/questionnaires-update-controller.js"></script>
     <script src="questionnaires/questionnaires-controller.js"></script>
-    <meta charset="utf-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="app.css"/>
+	<script type="text/javascript">
+		angular.element(document.getElementsByTagName('head')).append(angular.element('<base href="' + window.location.pathname + '" />'));
+	</script>
   </head>
   <body data-ng-controller="QuestionnairesController as questionnairesController">
     <div class="container-fluid">
-	    <form class="form-inline">
-	        <input type="text" class="form-control" data-ng-model="questionnairesController.name" />
-	        <button class="btn btn-success" data-ng-click="questionnairesController.add()">New</button>
-	    </form>
-	    <hr/>
-	    <table class="table table-hover">
-	    	<tr><th>Id</th><th>Title</th><th>Description</th><th>Delete</th></tr>
-	    	<tr entry data-ng-repeat="(key, model) in questionnairesController.getAll()" questionnaire="model" controller="questionnairesController"></tr>
-	    </table>
+		<div data-ng-view></div>
 	    <footer>&copy; 2015 The FHNW Team</footer>
     </div>
   </body>

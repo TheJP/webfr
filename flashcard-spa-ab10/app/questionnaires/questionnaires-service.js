@@ -7,9 +7,18 @@ angular.module('flashcard').service('QuestionnairesRepository', function(){
 	this.getAll = function getAll(){
 		return questionnaires;
 	};
+	this.get = function get(id){
+		return questionnaires[id];
+	};
 	this.add = function add(name){
-		var id = Math.floor(Math.random() * 100);
-		questionnaires[id] = { id: id, title: name, description: 'Lorem ipsum...' };
+		this.save({ title: name, description: 'Lorem ipsum...' });
+	};
+	this.save = function save(questionnaire){
+		if(!questionnaire.id){
+			var id = Math.floor(Math.random() * 100);
+			questionnaire.id = id;
+		}
+		questionnaires[questionnaire.id] = questionnaire;
 	};
 	this.remove = function remove(id){
 		delete questionnaires[id];
