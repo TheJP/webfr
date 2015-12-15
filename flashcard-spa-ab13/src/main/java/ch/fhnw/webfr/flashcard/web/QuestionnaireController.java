@@ -41,4 +41,17 @@ public class QuestionnaireController {
 		if(q == null){ return new ResponseEntity<>(HttpStatus.NOT_FOUND); }
 		return new ResponseEntity<>(q, HttpStatus.OK); //Why not HttpStatus.FOUND?
 	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Questionnaire> update(@PathVariable("id") Long id, @Valid @RequestBody Questionnaire questionnaire){
+		questionnaire.setId(id);
+		Questionnaire q = repository.save(questionnaire);
+		if(q == null){ return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); }
+		return new ResponseEntity<>(q, HttpStatus.OK);
+	}
+
+	public ResponseEntity<Void> delete(@PathVariable("id") Long id){
+		repository.delete(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT); //WHY?
+	}
 }
