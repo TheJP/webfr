@@ -4,6 +4,7 @@ import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import ch.fhnw.webfr.flashcard.persistence.QuestionnaireRepository;
@@ -11,7 +12,8 @@ import ch.fhnw.webfr.flashcard.persistence.QuestionnaireRepository;
 @Configuration
 // EnableWebMvc needed to import WebMvcConfigurationSupport which is triggered within the test
 @EnableWebMvc
-@ComponentScan(basePackages = {"ch.fhnw.webfr.flashcard.web"})
+@EnableAspectJAutoProxy
+@ComponentScan(basePackages = {"ch.fhnw.webfr.flashcard"})
 public class TestContext {
 	@Bean
     public QuestionnaireRepository questionnaireRepository() {

@@ -50,6 +50,7 @@ public class QuestionnaireController {
 		return new ResponseEntity<>(q, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable("id") Long id){
 		repository.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT); //WHY?

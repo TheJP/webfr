@@ -1,4 +1,3 @@
-/** outadted by network service */
 angular.module('flashcard').service('QuestionnairesRepository', function(){
 	var questionnaires = {
 		1: {id: 1, title: 'Q1', description: 'Lorem ipsum...'},

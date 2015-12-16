@@ -14,12 +14,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import ch.fhnw.webfr.flashcard.domain.Questionnaire;
 import ch.fhnw.webfr.flashcard.persistence.QuestionnaireRepository;
@@ -82,7 +82,8 @@ public class QuestionnaireControllerTest {
 		mockMvc.perform(
 			post("/questionnaires/")
 				.header("Accept", "application/json")
-				.contentType("application/json")
+				.contentType(MediaType.APPLICATION_JSON)
+//				.contentType("application/json")
 				.content("{ \"title\": \"title\", \"description\": \"aaa\" }"))
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.id", is(2)))
@@ -98,7 +99,7 @@ public class QuestionnaireControllerTest {
 		mockMvc.perform(
 			post("/questionnaires/")
 				.header("Accept", "application/json")
-				.contentType("application/json")
+				.contentType(MediaType.APPLICATION_JSON)
 				.content("{ \"title\": \"title\", \"description\": \"aa\" }"))
 			.andExpect(status().isInternalServerError());
 	}
@@ -126,25 +127,44 @@ public class QuestionnaireControllerTest {
 		verify(questionnaireRepositoryMock, times(1)).findAll();
 	}
 
-//	@Test
-//	public void updateQuestionnaire() throws Exception {
-//		Questionnaire q1 = new QuestionnaireBuilder(1L)
-//			.title("title")
-//			.description("aaa")
-//			.build();
-//		Questionnaire q2 = new QuestionnaireBuilder(2L)
-//				.title("title2")
-//				.description("aaa2")
-//				.build();
-//		when(questionnaireRepositoryMock.findAll()).thenReturn(Arrays.asList(q1, q2));
-//		mockMvc.perform(
-//			get("/questionnaires/").header("Accept", "application/json"))
-//			.andExpect(status().isOk())
-//			.andExpect(jsonPath("$[0].id", is(1)))
-//			.andExpect(jsonPath("$[0].title", is("title")))
-//			.andExpect(jsonPath("$[0].description", is("aaa")))
-//			.andExpect(jsonPath("$[1].id", is(2)))
-//			.andExpect(jsonPath("$[1].title", is("title2")))
-//			.andExpect(jsonPath("$[1].description", is("aaa2")));
-//	}
+	@Test
+	public void updateQuestionnaire() throws Exception {
+		Questionnaire q = new QuestionnaireBuilder(1L)
+			.title("title")
+			.description("aaa")
+			.build();
+		when(questionnaireRepositoryMock.save(any(Questionnaire.class))).thenReturn(q);
+		mockMvc.perform(
+			put("/questionnaires/{id}", q.getId())
+				.header("Accept", "application/json")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{ \"title\": \"title\", \"description\": \"aaa\" }"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id", is(1)))
+			.andExpect(jsonPath("$.title", is("title")))
+			.andExpect(jsonPath("$.description", is("aaa")));
+		verify(questionnaireRepositoryMock, times(1)).save(
+			eq(new QuestionnaireBuilder(1L).title("title").description("aaa").build()));
+	}
+
+	@Test
+	public void updateQuestionnaireError() throws Exception {
+		when(questionnaireRepositoryMock.save(any(Questionnaire.class))).thenReturn(null);
+		mockMvc.perform(
+			put("/questionnaires/{id}", 1L)
+				.header("Accept", "application/json")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{ \"title\": \"title\", \"description\": \"aaa\" }"))
+			.andExpect(status().isInternalServerError());
+		verify(questionnaireRepositoryMock, times(1)).save(
+			eq(new QuestionnaireBuilder(1L).title("title").description("aaa").build()));
+	}
+
+	@Test
+	public void deleteQuestionnaire() throws Exception {
+		mockMvc.perform(
+			delete("/questionnaires/{id}", 7L).header("Accept", "application/json"))
+			.andExpect(status().isNoContent());
+		verify(questionnaireRepositoryMock, times(1)).delete(7L);
+	}
 }
