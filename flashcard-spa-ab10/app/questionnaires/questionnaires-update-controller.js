@@ -15,12 +15,16 @@ function($routeParams, $location, QuestionnairesRepository){
 	};
 
 	//Load
-	QuestionnairesRepository.get($routeParams.questionnaireId).then(function done(response){
-		refresh(response.data);
-	}, function error(response){ alert('Could not find questionnaire'); console.log(response); });
+	QuestionnairesRepository.get($routeParams.questionnaireId).then(
+		function done(response){ refresh(response.data); },
+		function error(response){ alert('Could not find questionnaire'); console.log(response); }
+	);
 
 	this.update = function update(){
-		QuestionnairesRepository.save({ id: questionaire.id, title: this.title, description: this.description });
+		QuestionnairesRepository.save({ id: questionaire.id, title: this.title, description: this.description }).then(
+			function done(response){ /*controller.update(response.data);*/ },
+			function error(response){ alert('Could not update questionnaire'); console.log(response); }
+		);
 		$location.path('/');
 	}
 	this.submit = this.update;

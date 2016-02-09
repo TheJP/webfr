@@ -48,8 +48,12 @@ function($uibModal, $route, $routeParams, $location, QuestionnairesRepository){
 		modalInstance.result.then(function done(item) {
 			QuestionnairesRepository.save(item).then(function done(response){
 				questionnaires[response.data.id] = response.data;
-			}, function error(){ alert('Could not save questionnaire'); });
+			}, function error(response){ alert('Could not save questionnaire'); console.log(response); });
 	    }, function cancel() {
 	    });
 	};
+	this.update = function update(data){
+//		questionnaires[data.id].title = data.title;
+//		questionnaires[data.id].description = data.description;
+	}
 }]);
